@@ -20,6 +20,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/golang/glog"
 )
 
 // test:
@@ -51,7 +53,7 @@ type compare struct {
 
 func (t *testItem) execute(s string) (result bool) {
 	result = false
-	match := strings.Contains(s, t.Flag)
+	match := t.Flag == "" || strings.Contains(s, t.Flag)
 
 	if t.Set {
 		var flagVal string
@@ -78,6 +80,7 @@ func (t *testItem) execute(s string) (result bool) {
 				os.Exit(1)
 			}
 
+			glog.V(1).Info(fmt.Sprintf("Comparing '%s' '%s' '%s'\n", t.Compare.Op, flagVal, t.Compare.Value))
 			switch t.Compare.Op {
 			case "eq":
 				result = flagVal == t.Compare.Value
@@ -86,20 +89,36 @@ func (t *testItem) execute(s string) (result bool) {
 				result = !(flagVal == t.Compare.Value)
 
 			case "gt":
-				a, b := toNumeric(flagVal, t.Compare.Value)
-				result = a > b
+				if flagVal != "" {
+					a, b := toNumeric(flagVal, t.Compare.Value)
+					result = a > b
+				} else {
+					result = false
+				}
 
 			case "gte":
-				a, b := toNumeric(flagVal, t.Compare.Value)
-				result = a >= b
+				if flagVal != "" {
+					a, b := toNumeric(flagVal, t.Compare.Value)
+					result = a >= b
+				} else {
+					result = false
+				}
 
 			case "lt":
-				a, b := toNumeric(flagVal, t.Compare.Value)
-				result = a < b
+				if flagVal != "" {
+					a, b := toNumeric(flagVal, t.Compare.Value)
+					result = a < b
+				} else {
+					result = false
+				}
 
 			case "lte":
-				a, b := toNumeric(flagVal, t.Compare.Value)
-				result = a <= b
+				if flagVal != "" {
+					a, b := toNumeric(flagVal, t.Compare.Value)
+					result = a <= b
+				} else {
+					result = false
+				}
 
 			case "has":
 				result = strings.Contains(flagVal, t.Compare.Value)

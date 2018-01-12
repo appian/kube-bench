@@ -60,16 +60,16 @@ func handleError(err error, context string) (errmsg string) {
 // Check contains information about a recommendation in the
 // CIS Kubernetes 1.6+ document.
 type Check struct {
-	ID          string 		`yaml:"id" json:"test_number"`
-	Text        string		`json:"test_desc"`
+	ID          string      `yaml:"id" json:"test_number"`
+	Text        string      `json:"test_desc"`
 	Audit       string      `json:"omit"`
 	Type        string      `json:"type"`
 	Commands    []*exec.Cmd `json:"omit"`
 	Tests       *tests      `json:"omit"`
 	Set         bool        `json:"omit"`
-	Remediation string 		`json:"-"`
-	TestInfo    []string 	`json:"test_info"`
-	State 					`json:"status"`
+	Remediation string      `json:"-"`
+	TestInfo    []string    `json:"test_info"`
+	State       `json:"status"`
 }
 
 // Run executes the audit commands specified in a check and outputs
@@ -161,6 +161,7 @@ func (c *Check) Run() {
 		glog.V(2).Info(errmsgs)
 	}
 
+	glog.V(2).Info(fmt.Sprintf("Commands %#v output was '%s'\n", c.Commands, out.String()))
 	res := c.Tests.execute(out.String())
 	if res {
 		c.State = PASS
