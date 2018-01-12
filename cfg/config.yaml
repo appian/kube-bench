@@ -1,5 +1,5 @@
 ---
-## Controls Files. 
+## Controls Files.
 # These are YAML files that hold all the details for running checks.
 #
 ## Uncomment to use different control file paths.
@@ -12,7 +12,7 @@ master:
     - apiserver
     - scheduler
     - controllermanager
-    - etcd 
+    - etcd
     - flanneld
     # kubernetes is a component to cover the config file /etc/kubernetes/config that is referred to in the benchmark
     - kubernetes
@@ -30,15 +30,26 @@ master:
       - /etc/kubernetes/apiserver
     defaultconf: /etc/kubernetes/apiserver
 
+    podspecs:
+      - /etc/kubernetes/manifests/kube-apiserver.yaml
+      - /etc/kubernetes/manifests/kube-apiserver.manifest
+    defaultpodspec: /etc/kubernetes/manifests/kube-apiserver.yaml
+
   scheduler:
     bins:
       - "kube-scheduler"
       - "hyperkube scheduler"
       - "scheduler"
-    confs: 
+    confs:
       - /etc/kubernetes/scheduler.conf
       - /etc/kubernetes/scheduler
+      - /var/lib/kube-scheduler/kubeconfig
     defaultconf: /etc/kubernetes/scheduler
+
+    podspecs:
+      - /etc/kubernetes/manifests/kube-scheduler.yaml
+      - /etc/kubernetes/manifests/kube-scheduler.manifest
+    defaultpodspec: /etc/kubernetes/manifests/kube-scheduler.yaml
 
   controllermanager:
     bins:
@@ -48,7 +59,13 @@ master:
     confs:
       - /etc/kubernetes/controller-manager.conf
       - /etc/kubernetes/controller-manager
+      - /var/lib/kube-controller-manager/kubeconfig
     defaultconf: /etc/kubernetes/controller-manager
+
+    podspecs:
+      - /etc/kubernetes/manifests/kube-controller-manager.yaml
+      - /etc/kubernetes/manifests/kube-controller-manager.manifest
+    defaultpodspec: /etc/kubernetes/manifests/kube-controller-manager.yaml
 
   etcd:
     optional: true
@@ -57,6 +74,11 @@ master:
     confs:
       - /etc/etcd/etcd.conf
     defaultconf: /etc/etcd/etcd.conf
+
+    podspecs:
+      - /etc/kubernetes/manifests/etcd.yaml
+      - /etc/kubernetes/manifests/etcd.manifest
+    defaultpodspec: /etc/kubernetes/manifests/etcd.yaml
 
   flanneld:
     optional: true
@@ -72,7 +94,7 @@ node:
     - kubernetes
 
   kubernetes:
-    defaultconf: /etc/kubernetes/config    
+    defaultconf: /etc/kubernetes/config
 
   kubelet:
     bins:
@@ -80,8 +102,12 @@ node:
       - "kubelet"
     confs:
       - /etc/kubernetes/kubelet.conf
-      - /etc/kubernetes/kubelet 
+      - /etc/kubernetes/kubelet
     defaultconf: "/etc/kubernetes/kubelet.conf"
+
+    unitfiles:
+     - /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    defaultunitfile: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
   proxy:
     bins:

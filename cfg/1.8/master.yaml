@@ -55,7 +55,7 @@ groups:
   - id: 1.1.4
     text: "Ensure that the --kubelet-https argument is set to true (Scored)"
     audit: "ps -ef | grep $apiserverbin | grep -v grep"
-    tests: 
+    tests:
       bin_op: or
       test_items:
       - flag: "--kubelet-https"
@@ -102,7 +102,7 @@ groups:
   - id: 1.1.7
     text: "Ensure that the --secure-port argument is not set to 0 (Scored)"
     audit: "ps -ef | grep $apiserverbin | grep -v grep"
-    tests: 
+    tests:
       bin_op: or
       test_items:
         - flag:  "--secure-port"
@@ -158,7 +158,7 @@ groups:
       - flag: "--admission-control"
         compare:
           op: nothave
-          value: AlwaysAdmit 
+          value: AlwaysAdmit
         set: true
     remediation: |
       Edit the API server pod specification file $apiserverconf
@@ -417,7 +417,7 @@ groups:
     scored: true
 
   - id: 1.1.26
-    text: "Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as 
+    text: "Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as
       appropriate (Scored"
     audit: "ps -ef | grep $apiserverbin | grep -v grep"
     tests:
@@ -743,22 +743,11 @@ groups:
     set to 644 or more restrictive (Scored)"
     audit: "/bin/sh -c 'if test -e $apiserverconf; then stat -c %a $apiserverconf; fi'"
     tests:
-      bin_op: or
       test_items:
-      - flag: "644"
+      - flag: ""
         compare:
-          op: eq
-          value: "644"
-        set: true
-      - flag: "640"
-        compare:
-          op: eq
-          value: "640"
-        set: true
-      - flag: "600"
-        compare:
-          op: eq
-          value: "600"
+          op: lte
+          value: 644
         set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -788,22 +777,11 @@ groups:
     permissions are set to 644 or more restrictive (Scored)"
     audit: "/bin/sh -c 'if test -e $controllermanagerconf; then stat -c %a $controllermanagerconf; fi'"
     tests:
-      bin_op: or
       test_items:
-      - flag: "644"
+      - flag: ""
         compare:
-          op: eq
-          value: "644"
-        set: true
-      - flag: "640"
-        compare:
-          op: eq
-          value: "640"
-        set: true
-      - flag: "600"
-        compare:
-          op: eq
-          value: "600"
+          op: lte
+          value: 644
         set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -833,22 +811,11 @@ groups:
     to 644 or more restrictive (Scored)"
     audit: "/bin/sh -c 'if test -e $schedulerconf; then stat -c %a $schedulerconf; fi'"
     tests:
-      bin_op: or
       test_items:
-        - flag: "644"
+        - flag: ""
           compare:
-            op: eq
-            value: "644"
-          set: true
-        - flag: "640"
-          compare:
-            op: eq
-            value: "640"
-          set: true
-        - flag: "600"
-          compare:
-            op: eq
-            value: "600"
+            op: lte
+            value: 644
           set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -878,22 +845,11 @@ groups:
     644 or more restrictive (Scored)"
     audit: "/bin/sh -c 'if test -e $etcdconf; then stat -c %a $etcdconf; fi'"
     tests:
-      bin_op: or
       test_items:
-        - flag: "644"
+        - flag: ""
           compare:
-            op: eq
-            value: "644"
-          set: true
-        - flag: "640"
-          compare:
-            op: eq
-            value: "640"
-          set: true
-        - flag: "600"
-          compare:
-            op: eq
-            value: "600"
+            op: lte
+            value: 644
           set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -942,13 +898,13 @@ groups:
 
   - id: 1.4.11
     text: "Ensure that the etcd data directory permissions are set to 700 or more restrictive (Scored)"
-    audit: ps -ef | grep $etcdbin | grep -v grep | sed 's%.*data-dir[= ]\([^ ]*\).*%\1%' | xargs stat -c %a
+    audit: "ps -ef | grep $etcdbin | grep -v grep | grep -o data-dir=.* | cut -d= -f2 | xargs --no-run-if-empty stat -c %a"
     tests:
       test_items:
-      - flag: "700"
+      - flag: ""
         compare:
-          op: eq
-          value: "700"
+          op: lte
+          value: 700
         set: true
     remediation: |
       On the etcd server node, get the etcd data directory, passed as an argument --data-dir ,
@@ -980,21 +936,11 @@ groups:
     tests:
       bin_op: or
       test_items:
-        - flag: "644"
-          compare:
-            op: eq
-            value: "644"
-          set: true
-        - flag: "640"
-          compare:
-            op: eq
-            value: "640"
-          set: true
-        - flag: "600"
-          compare:
-            op: eq
-            value: "600"
-          set: true 
+      - flag: ""
+        compare:
+          op: lte
+          value: 644
+        set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
       For example,
@@ -1024,21 +970,11 @@ groups:
     tests:
       bin_op: or
       test_items:
-        - flag: "644"
-          compare:
-            op: eq
-            value: "644"
-          set: true
-        - flag: "640"
-          compare:
-            op: eq
-            value: "640"
-          set: true
-        - flag: "600"
-          compare:
-            op: eq
-            value: "600"
-          set: true
+      - flag: ""
+        compare:
+          op: lte
+          value: 644
+        set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
       For example,
@@ -1068,21 +1004,11 @@ groups:
     tests:
       bin_op: or
       test_items:
-        - flag: "644"
-          compare:
-            op: eq
-            value: "644"
-          set: true
-        - flag: "640"
-          compare:
-            op: eq
-            value: "640"
-          set: true
-        - flag: "600"
-          compare:
-            op: eq
-            value: "600"
-          set: true   
+      - flag: ""
+        compare:
+          op: lte
+          value: 644
+        set: true
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
       For example,
@@ -1254,7 +1180,7 @@ groups:
       Then, edit the etcd pod specification file $etcdconf on the
       master node and set the below parameter.
       --trusted-ca-file=</path/to/ca-file>
-    scored: false 
+    scored: false
 
 - id: 1.6
   text: "General Security Primitives"
@@ -1292,7 +1218,7 @@ groups:
     scored: false
 
   - id: 1.6.5
-    text: "Ensure that the seccomp profile is set to docker/default in your pod 
+    text: "Ensure that the seccomp profile is set to docker/default in your pod
     definitions (Not Scored)"
     type: "manual"
     remediation: |
