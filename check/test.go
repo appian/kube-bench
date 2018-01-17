@@ -120,6 +120,14 @@ func (t *testItem) execute(s string) (result bool) {
 					result = false
 				}
 
+			case "re":
+				var err error
+				result, err = regexp.Match(t.Compare.Value, []byte(flagVal))
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Regex owie")
+					os.Exit(1)
+				}
+
 			case "has":
 				result = strings.Contains(flagVal, t.Compare.Value)
 
