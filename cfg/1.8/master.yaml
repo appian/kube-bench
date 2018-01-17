@@ -741,7 +741,7 @@ groups:
   - id: 1.4.1
     text: "Ensure that the API server pod specification file permissions are
     set to 644 or more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $apiserverpodspec; then stat -c %a $apiserverpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $apiserverpodspec; then stat -Lc %a $apiserverpodspec; fi'"
     tests:
       test_items:
       - flag: ""
@@ -758,7 +758,7 @@ groups:
   - id: 1.4.2
     text: "Ensure that the API server pod specification file ownership is set to
     root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $apiserverpodspec; then stat -c %U:%G $apiserverpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $apiserverpodspec; then stat -Lc %U:%G $apiserverpodspec; fi'"
     tests:
       test_items:
       - flag: "root:root"
@@ -775,7 +775,7 @@ groups:
   - id: 1.4.3
     text: "Ensure that the controller manager pod specification file
     permissions are set to 644 or more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $controllermanagerpodspec; then stat -c %a $controllermanagerpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $controllermanagerpodspec; then stat -Lc %a $controllermanagerpodspec; fi'"
     tests:
       test_items:
       - flag: ""
@@ -792,7 +792,7 @@ groups:
   - id: 1.4.4
     text: "Ensure that the controller manager pod specification file
     ownership is set to root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $controllermanagerpodspec; then stat -c %U:%G $controllermanagerpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $controllermanagerpodspec; then stat -Lc %U:%G $controllermanagerpodspec; fi'"
     tests:
       test_items:
       - flag: "root:root"
@@ -809,7 +809,7 @@ groups:
   - id: 1.4.5
     text: "Ensure that the scheduler pod specification file permissions are set
     to 644 or more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $schedulerpodspec; then stat -c %a $schedulerpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $schedulerpodspec; then stat -Lc %a $schedulerpodspec; fi'"
     tests:
       test_items:
         - flag: ""
@@ -826,7 +826,7 @@ groups:
   - id: 1.4.6
     text: "Ensure that the scheduler pod specification file ownership is set to
     root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $schedulerpodspec; then stat -c %U:%G $schedulerpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $schedulerpodspec; then stat -Lc %U:%G $schedulerpodspec; fi'"
     tests:
       test_items:
         - flag: "root:root"
@@ -843,7 +843,7 @@ groups:
   - id: 1.4.7
     text: "Ensure that the etcd pod specification file permissions are set to
     644 or more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $etcdpodspec; then stat -c %a $etcdpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $etcdpodspec; then stat -Lc %a $etcdpodspec; fi'"
     tests:
       test_items:
         - flag: ""
@@ -860,7 +860,7 @@ groups:
   - id: 1.4.8
     text: "Ensure that the etcd pod specification file ownership is set to
     root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $etcdpodspec; then stat -c %U:%G $etcdpodspec; fi'"
+    audit: "/bin/sh -c 'if test -e $etcdpodspec; then stat -Lc %U:%G $etcdpodspec; fi'"
     tests:
       test_items:
       - flag: "root:root"
@@ -877,7 +877,7 @@ groups:
   - id: 1.4.9
     text: "Ensure that the Container Network Interface file permissions are
     set to 644 or more restrictive (Not Scored)"
-    audit: "stat -c %a <path/to/cni/files>"
+    audit: "stat -Lc %a <path/to/cni/files>"
     type: manual
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -888,7 +888,7 @@ groups:
   - id: 1.4.10
     text: "Ensure that the Container Network Interface file ownership is set
     to root:root (Not Scored)"
-    audit: "stat -c %U:%G <path/to/cni/files>"
+    audit: "stat -Lc %U:%G <path/to/cni/files>"
     type: manual
     remediation: |
       Run the below command (based on the file location on your system) on the master node.
@@ -898,7 +898,7 @@ groups:
 
   - id: 1.4.11
     text: "Ensure that the etcd data directory permissions are set to 700 or more restrictive (Scored)"
-    audit: "ps -ef | grep $etcdbin | grep -v grep | grep -o data-dir=.* | cut -d= -f2 | xargs --no-run-if-empty stat -c %a"
+    audit: "ps -ef | grep $etcdbin | grep -v grep | grep -o data-dir=.* | cut -d= -f2 | xargs --no-run-if-empty stat -Lc %a"
     tests:
       test_items:
       - flag: ""
@@ -916,7 +916,7 @@ groups:
 
   - id: 1.4.12
     text: "Ensure that the etcd data directory ownership is set to etcd:etcd (Scored)"
-    audit: "ps -ef | grep $etcdbin | grep -v grep | grep -o data-dir=.* | cut -d= -f2 | xargs stat -c %U:%G"
+    audit: "ps -ef | grep $etcdbin | grep -v grep | grep -o data-dir=.* | cut -d= -f2 | xargs stat -Lc %U:%G"
     tests:
       test_items:
       - flag: "etcd:etcd"
@@ -932,7 +932,7 @@ groups:
   - id: 1.4.13
     text: "Ensure that the admin.conf file permissions are set to 644 or
     more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e /etc/kubernetes/admin.conf; then stat -c %a /etc/kubernetes/admin.conf; fi'"
+    audit: "/bin/sh -c 'if test -e /etc/kubernetes/admin.conf; then stat -Lc %a /etc/kubernetes/admin.conf; fi'"
     tests:
       test_items:
       - flag: ""
@@ -948,7 +948,7 @@ groups:
 
   - id: 1.4.14
     text: "Ensure that the admin.conf file ownership is set to root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e /etc/kubernetes/admin.conf; then stat -c %U:%G /etc/kubernetes/admin.conf; fi'"
+    audit: "/bin/sh -c 'if test -e /etc/kubernetes/admin.conf; then stat -Lc %U:%G /etc/kubernetes/admin.conf; fi'"
     tests:
       test_items:
       - flag: "root:root"
@@ -965,7 +965,7 @@ groups:
   - id: 1.4.15
     text: "Ensure that the scheduler.conf file permissions are set to 644 or
     more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $schedulerconf; then stat -c %a $schedulerconf; fi'"
+    audit: "/bin/sh -c 'if test -e $schedulerconf; then stat -Lc %a $schedulerconf; fi'"
     tests:
       test_items:
       - flag: ""
@@ -981,7 +981,7 @@ groups:
 
   - id: 1.4.16
     text: "Ensure that the scheduler.conf file ownership is set to root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $schedulerconf; then stat -c %U:%G $schedulerconf; fi'"
+    audit: "/bin/sh -c 'if test -e $schedulerconf; then stat -Lc %U:%G $schedulerconf; fi'"
     tests:
       test_items:
       - flag: "root:root"
@@ -998,7 +998,7 @@ groups:
   - id: 1.4.17
     text: "Ensure that the controller-manager.conf file permissions are set
     to 644 or more restrictive (Scored)"
-    audit: "/bin/sh -c 'if test -e $controllermanagerconf; then stat -c %a $controllermanagerconf; fi'"
+    audit: "/bin/sh -c 'if test -e $controllermanagerconf; then stat -Lc %a $controllermanagerconf; fi'"
     tests:
       test_items:
       - flag: ""
@@ -1014,7 +1014,7 @@ groups:
 
   - id: 1.4.18
     text: "Ensure that the controller-manager.conf file ownership is set to root:root (Scored)"
-    audit: "/bin/sh -c 'if test -e $controllermanagerconf; then stat -c %U:%G $controllermanagerconf; fi'"
+    audit: "/bin/sh -c 'if test -e $controllermanagerconf; then stat -Lc %U:%G $controllermanagerconf; fi'"
     tests:
       test_items:
       - flag: "root:root"
