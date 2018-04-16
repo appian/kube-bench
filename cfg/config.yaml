@@ -28,6 +28,7 @@ master:
     confs:
       - /etc/kubernetes/apiserver.conf
       - /etc/kubernetes/apiserver
+      - /etc/kubernetes/manifests/kube-apiserver.manifest
     defaultconf: /etc/kubernetes/apiserver
 
   scheduler:
